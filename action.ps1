@@ -45,10 +45,9 @@ catch {
     }
     Write-Information -Tags "Audit" -MessageData $auditLog
     Write-Error "Could not execute ExchangeOnline action: [RoomMailboxCreate] for: [$($formObject.DisplayName)], error: $($ex.Exception.Message), Details : $($ex.Exception.ErrorDetails)"
+} finally {
+    if ($IsConnected) {
+        $exchangeSessionEnd = Disconnect-ExchangeOnline -Confirm:$false -Verbose:$false
+    }
 }
-
-if ($IsConnected){
-       $exchangeSessionEnd = Disconnect-ExchangeOnline -Confirm:$false -Verbose:$false
-}
-
 #########################################################
